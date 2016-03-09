@@ -1,10 +1,12 @@
-\documentclass[11pt]{article}
+\documentclass[11pt,twocolumn]{article}
 \usepackage[utf8]{inputenc}
 \usepackage[polish]{babel}
 \usepackage[QX]{fontenc}
 \usepackage{lmodern}
 \usepackage{textcomp}
 \usepackage{graphicx}
+\usepackage{tabu}
+\usepackage{lipsum}
 
  
 
@@ -35,49 +37,59 @@
   \vspace{2cm}
 
   Daniel Danilewicz \par
-  Maciej Kucharski \par
   Marek Dzienisiuk \par
-  Paweł Stiasny \par
   Piotr Dziewicki \par
-  Tomasz Pęksa \par
   Wiktor Garbacz \par
+  Maciej Kucharski \par
+  Tomasz Pęksa \par
+  Paweł Stiasny \par
 
   \vfill
 \end{titlepage}
 
+
+\begin{table*}[t]
+  \begin{tabu}{ X[-1] X }
+    \# & Usługa powinna: \\
+    \hline
+    RQ1 & Mieć dokładnie jeden, ten sam tekstowy plik konfiguracyjny dla części
+      serwerowej i klientów usługi, \\ \hline
+    RQ2 & Składać się po stronie serwerowej z dwóch warstw: (1)  wewnętrznej 
+      wytwarzającej, przechowującej i przesyłającej przetworzoną wrażliwą
+      informację, (2) warstwy zewnętrznej do udostępniania przetworzonej informacji
+      oprogramowaniu klienckiemu usługi, \\ \hline
+    RQ3 & Oprogramowanie realizujące część serwerową powinno być współbieżne, \\
+      \hline
+    RQ4 & Składać się po stronie klienckiej z prostych narzędzi opatulających
+      zaproponowane API protokołu komunikacyjnego, \\ \hline
+    RQ5 & Zapewniać odporność na uszkodzenia węzła, stąd każda z warstw powinna być
+      uruchomiona na co najmniej dwóch węzłach, \\ \hline
+    RQ6 & Zapewniać realizację usługi w trakcie awarii w czasie obsługi, \\ \hline
+    RQ7 & Obsługiwać scenariusz próby ponownego wpięcia się przez węzeł dowolnej z
+      warstw, z którym wcześniej utracono łączność, a zarazem być odporną na próbę
+      zastąpienia nieosiągalnego sieciowo węzła (np. w wyniku ataku DoS, odmowa
+      usługi) węzłem wrogim do tego nieuprawnionym, \\ \hline
+    RQ8 & Na bieżąco i transparentnie dla oprogramowania klienckiego zarządzać
+      dostępnymi zasobami lokalizacyjnymi, \\ \hline
+    RQ9 & Zapewniać zadany (większy niż 1 ale dopuszczalny konfiguracją mniejszy niż
+      liczba serwerów danych) poziom redundancji - z obsługą uzupełniania kopii na
+      innych serwerach w przypadku awarii włącznie, \\ \hline
+    RQ10 & Cała część sewerowa usługi powinna być startowana i zamykana jednokrotnym
+      wywołaniem skyptu na jednym węźle serwera z jednym argumentem
+      \textlangle{}start \textbar{} stop \textbar{} status\textrangle{}
+      (wykorzystanie nieinteraktywnych metod automatycznego uwierzytelniania
+      węzłów w SSH), \\ \hline
+  \end{tabu}
+  \caption{Lista wymagań}
+  \label{table:lwym}
+\end{table*}
+ 
+
 \section{Wymagania}
 
-Usługa powinna:
+W ramach projektu ma powstać dwuwarstwowa usługa.  Usługa ma spełniać
+wymagania opisane w tabeli \ref{table:lwym}.
 
-\begin{tabular}{ l p{10cm} }
-  \hline
-  RQ1 & Mieć dokładnie jeden ten sam tekstowy plik konfiguracyjny dla części
-    serwerowej i klientów usługi, \\ \hline
-  RQ2 & Składać się po stronie serwerowej z dwóch warstw: (1)  wewnętrznej 
-    wytwarzającej, przechowującej i przesyłającej przetworzoną wrażliwą
-    informację, (2) warstwy zewnętrznej do udostępniania przetworzonej informacji
-    oprogramowaniu klienckiemu usługi, \\ \hline
-  RQ3 & Oprogramowanie realizujące część serwerową powinno być współbieżne, \\
-    \hline
-  RQ4 & Składać się po stronie klienckiej z prostych narzędzi opatulających
-    zaproponowane API protokołu komunikacyjnego, \\ \hline
-  RQ5 & Zapewniać odporność na uszkodzenia węzła, stąd każda z warstw powinna być
-    uruchomiona na co najmniej dwóch węzłach, \\ \hline
-  RQ6 & Zapewniać realizację usługi w trakcie awarii w czasie obsługi, \\ \hline
-  RQ7 & Obsługiwać scenariusz próby ponownego wpięcia się przez węzeł dowolnej z
-    warstw, z którym wcześniej utracono łączność, a zarazem być odporną na próbę
-    zastąpienia nieosiągalnego sieciowo węzła (np. w wyniku ataku DoS, odmowa
-    usługi) węzłem wrogim do tego nieuprawnionym, \\ \hline
-  RQ8 & Na bieżąco i transparentnie dla oprogramowania klienckiego zarządzać
-    dostępnymi zasobami lokalizacyjnymi, \\ \hline
-  RQ9 & Zapewniać zadany (większy niż 1 ale dopuszczalny konfiguracją mniejszy niż
-    liczba serwerów danych) poziom redundancji - z obsługą uzupełniania kopii na
-    innych serwerach w przypadku awarii włącznie, \\ \hline
-  RQ10 & Cała część sewerowa usługi powinna być startowana i zamykana jednokrotnym
-    wywołaniem skyptu na jednym węźle serwera z jednym argumentem
-    \textlangle{} start \textbar{} stop \textbar{} status \textrangle{}
-    (wykorzystanie nieinteraktywnych metod automatycznego uwierzytelniania
-    węzłów w SSH), \\ \hline
-\end{tabular}
- 
+\lipsum
+
 \end{document}
