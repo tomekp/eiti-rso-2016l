@@ -1,0 +1,108 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{enumitem}
+
+%opening
+\author{
+  Daniel Danilewicz \\
+  Marek Dzienisiuk \\
+  Piotr Dziewicki \\
+  Wiktor Garbacz \\
+  Maciej Kucharski \\
+  Tomasz Pęksa \\
+  Paweł Stiasny
+}
+\date{21 marca 2016}
+
+
+\begin{document}
+
+\makeatletter
+\begin{titlepage}
+
+\begin{center}
+  \includegraphics[scale=0.1]{Logo_PW_black.png} \\
+  \vspace{50pt}
+  
+  {\LARGE Usługa bezpiecznej, niezawodnej dystrybucji przetworzonej, chronionej informacji} \\
+  \vspace{10pt}
+  
+  {\large Projekt realizowany w ramach przedmiotu RSO} \\
+  \vspace{40pt}
+  
+  {\Huge Protokół ze spotkania \#1} \\
+  \vspace{30pt}
+  
+  {\@author} \\
+  \vspace{10pt}
+  
+  {\@date}
+\end{center}
+
+\end{titlepage}
+\makeatother
+
+\section{Wprowadzenie.}
+  Pierwsze spotkanie projektowe odbyło się 21 marca 2016 r. na wydziale Elektroniki i Technik Informacyjnych Politechniki Warszawskiej.
+  W spotkaniu uczestniczyli wszyscy członkowie zespołu.
+
+\section{Agenda spotkania.}
+  Spotkanie zostało podzielone na trzy sekcje tematyczne, tj.:
+  
+  \begin{enumerate}
+    \item Wybór ról projektowych.
+    \item Wstępna dyskusja nt. kształtu rozwiązania.
+    \item Ustalenie trybu pracy.
+  \end{enumerate}
+  
+  Każdy temat został oddzielnie poruszony i poddany dyskusji.
+  W kolejnych podrozdziałach znajduje się szczegółowy opis wspólnych postanowień zespołu.
+
+\subsection{Role projektowe.}
+  Podczas spotkania udało się zidentyfikować, a następnie powierzyć role projektowe konkretnym członkom zespołu:
+  
+  \setlist[description]{leftmargin=\parindent,labelindent=\parindent}
+  \begin{description}
+    \item[Kierownik] - Paweł Stiasny
+    \item[Architekt] - Tomasz Pęksa
+    \item[Zarządca repozytorium] - Marek Dzienisiuk
+    \item[Protokolant] - Piotr Dziewicki
+    \item[Tester] - Maciej Kucharski
+    \item[Handlowiec] - Maciej Kucharski
+    \item[Specjalista ds. \textit{Docker}] - Tomasz Pęksa
+    \item[Specjalista ds. bezpieczeństwa] - Wiktor Garbacz
+  \end{description}
+  
+\subsection{Ogólny kształt rozwiązania.}
+  W trakcie spotkania przeprowadzono burzę mózgów na temat wizji oraz sposobu rozwiązania postawionego problemu.
+  Poniżej przedstawiono jedynie najważniejsze z ustaleń, natomiast komplet wymagań zostanie zebrany w~oddzielnym dokumencie:
+  
+  \begin{itemize}
+    \item wykorzystanie języków programowania \textit{Java} i \textit{Python};
+    \item uwierzytelnianie węzłów poprzez znane klucze publiczne;
+    \item wykorzystanie narzędzia \textit{cURL} jako klienta usługi;
+    \item liczba kopii danych definiowalna w globalnym pliku konfiguracyjnym;
+    \item dane udostępnione warstwie klienckiej w sposób przezroczysty;
+    \item opracowanie metody wykrywania żywotności węzła;
+    \item zabezpieczenie przed atakiem typu \textit{DoS} - metoda \textit{proof of work}.
+  \end{itemize}
+  
+  Ustalono również, że ostateczna decyzja co do formy projektowanego rozwiązania należy do głównego \textbf{architekta}.
+
+\subsection{Tryb pracy.}
+  W kwestii trybu pracy poruszono dwa nadrzędne tematy: częstość spotkań projektowych oraz sposób wprowadzania zmian do repozytorium.
+  
+\subsubsection{Spotkania projektowe.}
+  Zespół postanowił zrezygnować z regularnych spotkań projektowych.
+  Komunikacja w czasie trwania projektu będzie odbywała się zdalnie.
+  W przypadku ryzyka niedotrzymania terminu bądź wyraźnej prośby \textbf{kierownika}, \textbf{kierownik} zespołu ma prawo zorganizować dodatkowe spotkanie projektowe.
+
+\subsubsection{Sposób commitowania.}
+  Ustalono, że jedynie osoba na stanowisku \textbf{zarządcy} repozytorium ma prawo wykonania komendy \textit{push}.
+  Pozostali członkowie zespołu podczas pracy zobowiązują się kierować \textit{pull requesty} do \textbf{zarządcy}.
+  Po wstępnym \textit{review} dostarczonego modułu, jeśli ocena kodu jest pozytywna \textbf{zarządca} samodzielnie wykonuje komendę \textit{push} do głównego rezpozytorium.
+  
+\end{document}

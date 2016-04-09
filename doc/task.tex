@@ -1,0 +1,254 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{enumitem}
+\usepackage[colorlinks=true, urlcolor=cyan]{hyperref}
+
+%opening
+\author{
+  Tomasz Jordan Kruk
+}
+\date{4 marca 2016}
+
+
+\begin{document}
+
+\makeatletter
+\begin{titlepage}
+
+\begin{center}
+  \includegraphics[scale=0.1]{Logo_PW_black.png} \\
+  \vspace{50pt}
+  
+  {\LARGE Usługa bezpiecznej, niezawodnej dystrybucji przetworzonej, chronionej informacji} \\
+  \vspace{10pt}
+  
+  {\large Projekt realizowany w ramach przedmiotu RSO} \\
+  \vspace{40pt}
+  
+  {\Huge Treść zadania laboratoryjnego} \\
+  \vspace{30pt}
+  
+  {\@author} \\
+  \vspace{10pt}
+  
+  {\@date}
+\end{center}
+
+\end{titlepage}
+\makeatother
+
+\section{Opis zadania.}
+  Każda grupa projektowa ma za zadanie:
+  \begin{itemize}
+    \item zaprojektować,
+    \item zaimplementować,
+    \item przetestować,
+    \item zademonstrować odbierającemu projekt,
+  \end{itemize}
+  usługę bezpiecznej, niezawodnej dystrybucji przetworzonej, chronionej informacji.
+  
+  Zakłada się, że wewnętrzna warstwa wytwarza bądź ściąga z sieci informację wrażliwą i przekazuje w postaci przetworzonej
+  do warstwy zewnętrznej świadczącej usługi udostępniania informacji przetworzonej rozwiązaniom klienckim.
+  Na potrzeby projektu rozmiar i liczba wytwarzanych / przechowywanych informacji powinna być nietrywialna (co najmniej setki \textit{MB}).
+  Docelowy przedmiot rozwiązania implementowanego przez każdą grupę projektową, każda grupa projektowa ma za zadanie doprecyzować w ramach pierwszego etapu realizacji projektu. \\
+  
+  Usługa powinna:
+  
+  \begin{itemize}
+    \item mieć dokładnie jeden ten sam tekstowy plik konfiguracyjny dla części serwerowej i klientów usługi;
+    \item składać się po stronie serwerowej z dwóch warstw: 
+    \begin{description}
+      \item[wewnętrznej] - wytwarzającej, przechowującej i przesyłającej przetworzoną, wrażliwą informację, 
+      \item[zewnętrznej] - służącej do udostępniania przetworzonej informacji oprogramowaniu klienckiemu usługi;
+    \end{description}
+    \item oprogramowanie realizujące część serwerową powinno być współbieżne;
+    \item składać się po stronie klienckiej z prostych narzędzi opatulających zaproponowane \textit{API} protokołu komunikacyjnego;
+    \item zapewniać odporność na uszkodzenia węzła, stąd każda z warstw powinna być uruchomiona na co najmniej dwóch węzłach;
+    \item zapewniać realizację usługi w trakcie awarii w czasie obsługi;
+    \item obsługiwać scenariusz próby ponownego wpięcia się przez węzeł dowolnej z warstw, z którym wcześniej utracono łączność, a zarazem być odporną
+      na próbę zastąpienia nieosiągalnego sieciowo węzła (np. w wyniku ataku \textit{DoS}, odmowa usługi) węzłem wrogim do tego nieuprawnionym;
+    \item na bieżąco i transparentnie dla oprogramowania klienckiego zarządzać dostępnymi zasobami lokalizacyjnymi;
+    \item zapewniać zadany (większy niż 1, ale dopuszczalny konfiguracją, mniejszy niż liczba serwerów danych) poziom redundancji
+      - z obsługą uzupełniania kopii na innych serwerach w przypadku awarii włącznie;
+    \item cała część serwerowa usługi powinna być startowana i zamykana jednokrotnym wywołaniem skryptu na jednym węźle serwera z jednym argumentem
+      \textit{$<$start $|$ stop $|$ status$>$}
+      (wykorzystanie nieinteraktywnych metod automatycznego uwierzytelniania węzłów w \textit{SSH}).
+  \end{itemize}
+  
+  Podejmując decyzję o ewentualnym ograniczeniu skali projektu należy dążyć do tego, by ewentualnie pominąć aspekty mniej istotne z punktu widzenia przedmiotu RSO,
+  np. ewentualny interfejs graficzny czy rozbudowany analizator leksykalny języka zapytań.
+  Nie wolno jednak w wymaganiach na system ograniczać zakresu wymagań niefunkcjonalnych istotnych z punktu widzenia przedmiotu RSO,
+  takich jak: skalowalność, niezawodność, przezroczystość, obsługa czasowych niedostępności, czasowego rozpartycjonowania zasobów, itp.
+  
+  System powinien być uruchamialny w środowisku grupy komputerów pracujących w środowisku \textit{Linux}.
+  Projekt będzie można demonstrować w~laboratorium RSO.B, gdzie na 12 komputerach zainstalowany jest system \textit{Ubuntu}, albo na komputerach własnych bądź środowiskach zdalnych.
+  Ważne jest jedynie, by demonstracja gotowego rozwiązania mogła się fizycznie odbywać w sali laboratorium RSO.B.
+  
+  Wymagane jest co najmniej dla części serwerowej wykorzystanie środowiska systemu \textit{Linux}.
+  Postępy prac i wersja finalna mają być uruchomione, przetestowane i zademonstrowane w środowisku systemu \textit{Linux (Ubuntu 14.04 LTS)} w laboratorium RSO.B. \\
+  
+  Efektem końcowym projektu powinny być:
+  
+  \begin{itemize}
+    \item własne, działające oprogramowanie;
+    \item zautomatyzowana procedura prezentacji możliwości zrealizowanego \linebreak oprogramowania  
+      (obligatoryjnie w postaci skryptu sh, z podziałem na etapy i np. wciskaniem podczas demonstracji \textit{$<$Enter$>$});
+    \item pełna dokumentacja projektu zawierająca co najmniej następujące pozycje:
+    \begin{itemize}
+      \item uporządkowane wstępne opracowania,
+      \item doprecyzowaną względem treści szczegółową koncepcję zaproponowanego rozwiązania,
+      \item opis organizacji grupowego wytwarzania oprogramowania, przypisanych ról w projekcie, sprawozdanie z prac nad projektem, czyli listę spotkań roboczych wraz z datami i ustaleniami,
+      \item dokumentację techniczną proponowanego rozwiązania,
+      \item dokumentację testów,
+      \item dokumentację uruchamiania i konfiguracji systemu,
+      \item opis przygotowanych skryptów testowych i prezentacyjnych.
+    \end{itemize}
+  \end{itemize}
+  
+  \textbf{Ważne:} z dokumentacji musi jasno wynikać, kto i w jakim stopniu uczestniczył w realizacji poszczególnych elementów projektu. 
+  
+\section{Narzędzia programistyczne.}
+  Obligatoryjne: całe oprogramowanie powinno być przygotowane do dystrybucji i instalacji w postaci paczek docker (\url{www.docker.com}). 
+  
+  Jako narzędzie dowolny nieorientalny i dostępny język programowania.
+  Należy wykazać się samodzielnym zaimplementowaniem algorytmów rozproszonych - czym bardziej zaawansowane mechanizmy będą wykorzystywane z gotowych bibliotek programistycznych,
+  tym bardziej zaawansowane kompleksowo rozwiązanie będzie oczekiwane i wymagane od zespołu projektowego.
+  
+  Rozwiązanie należy obowiązkowo zademonstrować w laboratorium \linebreak RSO.B na jeden z następujących sposobów:
+  \begin{itemize}
+    \item na lokalnych Linuksach, przez dostęp terminalowy bądź portalowy;
+    \item na własnej mobilnej minisieci (np. laptopy połączone własnym routerem).
+  \end{itemize}
+  
+  Uwaga, to na zespole spoczywa obowiązek upewnienia się, że zastosowano narzędzia i postawiono wobec środowiska wymagania,
+  które umożliwiają sprawną demonstrację rozwiązania w sali laboratorium RSO.B.
+  
+  Do realizacji pracy grupowej (implementacja/dokumentacja) obowiązkowo wymagane będzie użycie systemu kontroli wersji, lokalnego bądź skorzystanie z jednego z portali
+  udostępniających takie rozwiązania w sieci.
+  
+  Cała dokumentacja ma być przygotowana starannie, spójnie, w jednym środowisku i z zachowaniem jednolitego formatowania.
+  Dokumentacja po każdym etapie powinna mieć postać jednego pliku \textit{pdf}.
+  Przed prezentacją kroku milowego plik \textit{pdf} należy obowiązkowo przesłać prowadzącemu na \linebreak \textit{e-mail} z zadaniem w tytule identyfikatora grupy projektowej.
+  Na oddawanie etapu należy również mieć wydrukowaną na papierze tę część dokumenacji, która została wytworzona bądź zaktualizowana po poprzednim kroku milowym.
+  
+  Do harmonogramowania zadań kierownicy projektów mogą użyć narzędzia, np. dostępnego pod Linuksem narzędzia \textit{Planner}.
+  Użycie narzędzia do harmonogramowania nie jest obowiązkowe, natomiast samo harmonogramowanie projektu jest obowiązkowe i musi mieć swój wyraźny ślad w~dokumentacji.
+
+\section{Ocenianie.}
+  Z przedmiotu RSO można zdobyć maksymalnie 100 punktów, 40 punktów z kolokwium oraz 60 (30 + 30) punktów z laboratorium.
+  W celu zaliczenia przedmiotu wymagane jest uzyskanie minimum 50 punktów sumarycznie z~kolokwium i laboratorium.
+  
+  Z laboratorium można uzyskać 60 punktów. Punkty uzyskiwane są \linebreak z dwóch źródeł:
+  \begin{enumerate}
+    \item Ocena projektu jako całości z końcowym rozdysponowaniem uzyskanych punktów przez kierownika projektu (0-30 punktów);
+    \item Ocena indywidualna pracy każdego z~członków zespołu przeprowadzona przez prowadzącego laboratoria po zakończeniu projektu (0-30 punktów).
+  \end{enumerate}
+  
+  W trakcie semestru występują dwa terminy pośrednie oceniania postępów w realizacji projektów (tzw. kroki milowe).
+  Na każdym z tych etapów prowadzący laboratorium ma możliwość przyznania do 5 punktów całemu zespołowi projektowemu.
+  Natomiast końcowa ocena realizacji projektu to możliwość uzyskania 20 punktów.
+  Zatem projekt sumarycznie oceniony jest przez prowadzącego w skali 0-30 punktów. 
+  
+  Ocena indywidualna przez prowadzącego laboratoria daje możliwość uzyskania od 0 do 30 punktów włącznie.
+  Przy ocenie uwzględniana jest m.in. dokumentacja pracy członka zespołu, uzyskana liczba punktów z oceny projektu jako całości, systematyczność pracy,
+  obecność na wymaganych terminach oraz ocena rzeczywistego wkładu danego członka zespołu.
+  Z tego względu bardzo ważnym jest, by w dokumentacji projektowej na każdym etapie było ściśle określone, który członek i w jakim stopniu jest odpowiedzialny za poszczególne części projektu.
+  
+  Nabyta liczba punktów jest automatycznie podwajana u kierownika danego projektu.
+  Jednocześnie kierownik, na podstawie własnej oceny wkładu poszczególnych członków zespołu, decyduje o tym, ile punktów z dostępnej puli punktów przyznać każdemu z członków zespołu projektowego.
+  Muszą być jedynie spełnione poniższe warunki: 
+
+  \begin{itemize}
+    \item średnia punktów przyznana członkom zespołu jest równa dokładnie liczbie punktów jaką uzyskał projekt;
+    \item każdy z członków zespołu projektowego musi uzyskać liczbę punktów z zakresu 0-30 punktów włącznie.
+  \end{itemize}
+  
+  Najprostszym rozwiązaniem spełniającym powyższe warunki jest przyznanie wszystkim członkom zespołu po tyle samo punktów, co uzyskał projekt i zarazem kierownik,
+  jednak kierownik ma prawo do innego rozdziału punktów. \\
+  
+  \textbf{Ważne:} przy podziale punktów nie mogą być uwzględniane punkty osób, które w trakcie semestru wycofały się z danej grupy projektowej bądź w ogóle z realizacji przedmiotu.
+
+\section{Grupy projektowe.}
+  Zadania realizowane są w grupach projektowych.
+  Każda grupa ma przypisany termin (12-14 lub 14-16), w którym ma do dyspozycji laboratorium~518.
+  Harmonogram przedstawiony jest na końcu niniejszego opracowania.
+  Za realizację projektu przez daną grupę odpowiada kierownik projektu i cały zespół projektowy.
+
+\section{Realizacja zadania projektowego.}
+  Realizacja zadania podzielona jest na trzy oceniane osobno fazy.
+  Faza pierwsza kończy się pierwszym krokiem milowym, druga drugim krokiem, a trzecia demonstracją końcową projektu i przekazaniem pełnej dokumentacji projektu.
+  Na zajęciach, na które wypada oddanie kolejnej fazy projektu obecność wszystkich członków zespołu jest obowiązkowa. 
+  
+  Wstępna faza jest fazą zapoznawania się z zagadnieniem do realizacji, dostępnymi narzędziami, środowiskiem uruchomieniowym, dostępnymi opracowaniami z poprzednich lat.
+  Faza ta wymaga następujących kroków do realizacji na zajęciach wstępnych:
+  
+  \begin{itemize}
+    \item organizacja grup projektowych (żaden student nie może zostać poza grupą projektową);
+    \item przypisanie terminu do grupy;
+    \item wybór kierownika projektu.
+  \end{itemize}
+  
+  Rolą kierownika będzie następnie ustalenie ról poszczególnych członków projektu.
+  W grupie projektowej powinny zostać wyróżnione co najmniej następujące role:
+  
+  \begin{description}
+    \item[kierownik] - osoba odpowiedzialna za pracę wykonywaną przez zespół projektowy;
+    \item[architekt] - osoba odpowiedzialna za wytworzenie architektury rozwiązania;
+    \item[repozytorysta] - osoba odpowiedzialna za przygotowanie i zarządzanie repozytorium projektu oraz przechowywanie aktualnej kopii zapasowej projektu;
+    \item[dokumentalista] - osoba odpowiedzialna za zarządzanie dokumentacją projektu, zbieranie i ujednolicanie dokumentacji technicznej pisanej przez innych członków zespołu
+      oraz m.in. protokołowanie ustaleń z poszczególnych spotkań roboczych zespołu projektowego;
+    \item[tester] - osoba odpowiedzialna za przygotowanie planu testów, w tym testów obciążeniowych, niezawodnościowych i synchronizacyjnych, ich przeprowadzenie oraz opisanie;
+    \item[handlowiec] - osoba odpowiedzialna za przygotowanie powtarzalnej, maksymalnie zautomatyzowanej (skrypty shell) demonstracji końcowej prototypu (trzeci krok milowy)
+      oraz sprawne przeprowadzenie końcowej demonstracji możliwości rozwiązania prowadzącemu;
+    \item[specjalista ds. \textit{docker}] - trener dockera dla pozostałych członków zespołu.
+  \end{description}
+  
+  Kierownik wyznacza i przydziela powyższe oraz dodatkowe role.
+  Wszystkie osoby z przydzielonymi rolami za wyjątkiem kierownika projektu mogą wchodzić w skład zespołu programistycznego realizującego projekt. 
+  
+  Kierownik projektu ma zakaz uczestniczenia bezpośrednio w pracach implementacyjnych.
+  
+\subsection{Faza pierwsza.}
+  W trakcie pierwszej fazy każdy z zespołów ma za zadanie zrealizować poniższe opracowania:
+  \begin{enumerate}
+    \item Opis rozwiązania \textit{Docker}.
+    \item Uruchomienie dostępnych w sieci wybranych konfiguracji demonstrujących wykorzystanie \textit{Docker} i opisanie uruchomień w raporcie.
+    \item Koncepcja i architektura rozwiązania własnego opisana m.in. przez zestawienie wymagań funkcjonalnych i niefunkcjonalnych.
+    \item Harmonogram realizacji projektu z pełnym zdefiniowaniem i przydziałem ról w projekcie osadzonych w czasie realizacji projektu.
+    \item Organizacja środowiska programistycznego projektu.
+  \end{enumerate}
+  
+  Pierwszy krok milowy to zakończenie realizacji powyższych opracowań i~przekazanie ich w postaci papierowej osobie prowadzącej laboratorium.
+
+\subsection{Faza druga.}
+  Faza druga ma następujące zadania:
+  \begin{enumerate}
+    \item Opracowanie szczegółowej koncepcji rozwiązania.
+    \item Realizacja prototypu oferującego ograniczoną funkcjonalność.
+    \item Opracowanie pełnego planu testów.
+    \item Opracowanie scenariusza końcowej demonstracji projektu.
+  \end{enumerate}
+  
+  Zaliczenie tego etapu projektu, to przedstawienie dokumentacji ze szczegółową koncepcją rozwiązania docelowego oraz demonstracja zrealizowanego prototypu (stan \textit{"już coś działa"}),
+  który oferuje ograniczoną funkcjonalność.
+  Na tym etapie nie jest wymagana kompletna dokumentacja, a demonstracja prototypu nie musi być automatyczna, jednak system ma już dla wybranych scenariuszy oferować pełną funkcjonalność.
+
+\subsection{Faza trzecia.}
+  Faza trzecia to dokończenie realizacji projektu, skompletowanie dokumentacji, przeprowadzenie testów i demonstracji rozwiązania,
+  czyli dostarczenie wszystkich wymaganych efektów końcowych projektu.
+  Tu można zdobyć najwięcej punktów.
+
+\section{Harmonogram oceniania.}
+  \begin{description}
+    \item[Pierwszy krok milowy] - 22 kwietnia 2016 r.
+    \item[Drugi krok milowy] - 6 maja 2016 r.
+    \item[Trzeci krok milowy] - 10 czerwca 2016 r.
+  \end{description}
+  
+  W powyższych terminach można uzyskać punkty za projekt.
+  Obecność wszystkich członków grupy w terminie kroku milowego jest obowiązkowa. 
+
+\end{document}

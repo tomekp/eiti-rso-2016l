@@ -1,0 +1,8 @@
+# general
+.directory
+
+# LaTeX specific
+*.aux
+*.log
+*.out
+*.pdf
