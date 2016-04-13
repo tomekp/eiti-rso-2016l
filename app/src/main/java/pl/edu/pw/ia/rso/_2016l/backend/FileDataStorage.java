@@ -15,6 +15,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.function.Supplier;
@@ -40,8 +41,13 @@ public class FileDataStorage implements DataStorage {
         File file = fileForFileId(fileId);
         log.info("Saving content of {} to {}", fileId, file.getAbsolutePath());
         try {
-            file.createNewFile();
+            boolean isNewFile = file.createNewFile();
+            if (!isNewFile) {
+                throw new FileAlreadyExistsException(file.getAbsolutePath(), fileId.toString(), "file already exists");
+            }
             FileUtils.copyInputStreamToFile(content.get(), file);
+        } catch (FileAlreadyExistsException e) {
+            log.info("File " + file.getAbsolutePath() + " already exists. " + fileId + " is already downloaded/in progress.", e);
         } catch (Exception e) {
             log.error("Failed to download " + fileId, e);
             markFile(fileId, ".failed");
