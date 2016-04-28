@@ -4,9 +4,11 @@
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
 \usepackage{enumitem}
+\usepackage{listings}
 
 %opening
 \author{
+  Tomasz Pęksa \\
   Paweł Stiasny
 }
 \date{28 kwietnia 2016}
@@ -27,7 +29,7 @@
   {\large Projekt realizowany w ramach przedmiotu RSO} \\
   \vspace{40pt}
   
-  {\Huge Specyfikacja wymagań} \\
+  {\Huge Wymagania, architektura, harmongoram} \\
   \vspace{30pt}
   
   {\@author} \\
@@ -42,6 +44,7 @@
 \tableofcontents
 \newpage
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \part{Specyfikacja wymagań}
 
 Priorytety wymagań zostały zdefiniowane w skali (Niski, Średni, Wysoki).
@@ -52,6 +55,7 @@ Wymagania funkcjonalne są opisane w postaci historyjek użytkownika ze
 scenariuszami testowymi w myśl metody BDD.  
 
 \subsection{Perspektywa użytkownika}
+\label{userPerspective}
 
 \subsubsection{Pobranie agregatu danych}
 Jako użytkownik chcę pobierać część wspólną linijek z podanych przez
@@ -185,6 +189,7 @@ połączenie z $j$ kolejnymi węzłami warstwy wewnętrznej.
 
 
 \section{Działania niepożądane}
+\label{attackVectors}
 Wymagane jest, żeby usługa była niepodatna na następujące wektory ataku:
 
 \subsection{Włączenie nieuprawnionego węzła}
@@ -209,5 +214,134 @@ atakującym.
 \textbf{Priorytet}: Niski
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\part{Architektura systemu}
+Poniżej przedstawiamy zarys planowanej przez nas architektury.
+Szczegóły zostaną rozwinięte w kolejnej iteracji i mogą ulec zmianie.
+
+\section{Model danych}
+\subsection{Plik}
+W usłudze przechowywane mogą być dowolne dane tekstowe.  Dane te są
+trzymane w plikach.
+
+\subsection{Identyfikator pliku}
+Identyfikatory są przydzialane przez usługę przy tworzeniu plików.
+Są to dowolne wartości liczbowe.
+
+\subsection{Identyfikator węzła}
+To każdego węzła warstwy wewnętrznej przypisany jest numeryczny
+identyfikator w zakresie pomiędzy 1 a liczbą węzłów.
+
+\section{Kluczowe elementy infrastruktury}
+\subsection{Węzły warstwy wewnętrznej}
+Warstwa wewnętrzna odpowiada ze magazynowanie danych.  Proces pracujący
+na węzłach tej warstwy udostępnia następujące API:
+\paragraph{Dostęp do plików}
+\begin{itemize}
+  \item Pobierz plik składowany na węźle
+  \item Ściągnij zewnętrzny zasób do pliku
+\end{itemize}
+\paragraph{Operacje składowe replikacji}
+\begin{itemize}
+  \item Pobierz plik z innego węzła i zapisz jako replikę
+  \item Usuń replikę
+  \item Lista plików składowanych na węźle
+\end{itemize}
+
+\subsection{Węzły warstwy zewnętrznej}
+Warstwa zewnętrzna odpowiada za:
+\begin{itemize}
+  \item Pobieranie informacji z warstwy wewnętrznej (magazynowej)
+  \item Przetwarzanie informacji
+  \item Udostępnianie przetworzonej informacji klientom usługi
+  \item Monitorowanie żywotności warstwy wewnętrznej
+\end{itemize}
+
+Proces działający w warstwie zewnętrznej w swoim API udostępnia
+następujące operacje:
+\begin{itemize}
+  \item Pobierz plik z zewnętrznego zasobu
+  \item Przekaż treść pliku
+\end{itemize}
+
+%%%%%%%%
+%
+%   Szczegóły API do sklejenia z opisu Tomka:
+%      https://gist.github.com/tomekp/c0037a7d2e45259fb39d
+%      https://gist.github.com/pstiasny/8c6b447c2c43565fbaf390aad355cfb2
+%
+%%%%%%%%
+
+\subsection{Klient}
+Na maszynie użytkownika końcowego instalowany będzie klient z
+interfejsem linii poleceń.  Jego zadaniem będzie komunikowanie się z
+węzłami warstwy zewnętrznej w celu realizacji celów użytkownika
+opisanych w sekcji \ref{userPerspective}.
+
+\section{Mechanizm replikacji}
+Mechanizm opiera się w dużej mierze na indepotentności operacji
+udostępnianych przez API warstwy wewnętrznej.  Dzięki tej właściwości
+usługa kontrolera replikacji może zostać wydelegowana do węzłów warstwy
+zewnętrznej i funkcjonować poprawnie nawet kiedy uruchomiona jest
+równocześnie na wielu węzłach.  Dzięki temu, że każdy z węzłów warstwy
+zewnętrznej bada dostępność odpowiedniej liczby replik, takie
+potraktowanie problemu zapewnia dostępność nie tylko w sytuacji awarii
+$r$ węzłów, gdzie $r$ -- liczba replik, ale także $r$ połączeń warstwa
+zewnętrzna - warsta wewnętrzna.
+
+\begin{lstlisting}
+Plik { idZasobu, zadanaLiczbaReplik }
+Wezel warstwy wewnetrznej udostepnia
+  listaPlikow(w) =
+    lista plikow przechowywanych na wezle
+  pobierzReplike(w, wZrodlowy, idZasobu) =
+    pobierz zasob z wezla zrodlowego i zapisz jako replike
+  usunReplike(w, idZasobu) =
+    usun (nadmiarowa) replike z lokalnego magazynu
+
+KontrolerReplikacji.zapewnijDostepnosc() =
+  repliki = pusta mapa Plik -> zbior Wezlow
+  for idWezla in [0, liczbaWezlow)
+    w = Wezel(idWezla)
+    lp = listaPlikow(w)
+    for plik in lp
+      dodaj w do repliki[plik]
+  for plik -> wezly in repliki
+    while liczba(wezly) < zadanaLiczbaReplik(plik)
+      kandydaci = znajdzWezlyDlaId(idZasobu(plik))
+      w = wez wezel z kandydaci
+      if w not in wezly and dostepny(w)
+        pobierzReplike(w, dowolny wezel z wezly, idZasobu(plik))
+        dodaj w do wezly
+    if liczba(wezly) > zadanaLiczbaReplik(plik)
+      wez nadmiarowe wezly doUsuniecia ostatnie wzgledem porzadku
+        okreslanego przez znajdzWezlyDlaId
+      for w in doUsuniecia
+        usunReplike(w, idZasobu(plik))
+\end{lstlisting}
+
+Należy zauważyć, że przy równoczesnym działaniu wielu kontrolerów
+replikacji może dojść do migotania replik w sytuacji, gdzie jeden z nich
+,,widzi'' pewną replikę, tj. ma sprawne połączenie do węzła ją
+przechowującego i zlecał usunięcie nadmiarowych replik, a inny nie.
+Aby uniknąć tego zjawiska implementacja operacji \texttt{usunReplike}
+powinna czekać z faktycznym usunięciem przez okres znacząco dłuższy
+od okresu badania żywotności i odwoływać je gdyby pojawiło się ponowne
+żadanie pobrania repliki.
+
+
+\section{Sieć}
+Komunikacja pomiędzy węzłami oraz węzłami i klientami odbywać się będzie
+za pomocą protokołu HTTPS.  Adresy poszczególnych węzłów warstwy
+będą zapisane w pliku konfiguracyjnym usługi.  Jeśli będzie to
+konieczne, możliwe będzie też rozszerzenie funkcjonalności o dynamiczne
+wykrywanie węzłów.
+
+Wszystkie połączenia pomiędzy węzłami oraz węzłami i klientami będą
+nawiązywane bezpieczenie z pośrednictwem protokołu TLS.  W celu
+realizacji wymagań opisanych w sekcji \ref{attackVectors} obie strony
+połączenia będą uwierzytelniane z użyciem kluczy kryptografii
+asymetrycznej z użyciem metod wbudowanych w protokół.  Klucze publiczne
+węzłów i użytkowników zostaną zapisane w konfiguracji usługi.
 
 \end{document}
