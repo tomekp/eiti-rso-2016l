@@ -1,0 +1,199 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage{enumitem}
+
+%opening
+\author{
+  Paweł Stiasny
+}
+\date{28 kwietnia 2016}
+
+
+\begin{document}
+
+\makeatletter
+\begin{titlepage}
+
+\begin{center}
+  \includegraphics[scale=0.1]{Logo_PW_black.png} \\
+  \vspace{50pt}
+  
+  {\LARGE Usługa bezpiecznej, niezawodnej dystrybucji przetworzonej, chronionej informacji} \\
+  \vspace{10pt}
+  
+  {\large Projekt realizowany w ramach przedmiotu RSO} \\
+  \vspace{40pt}
+  
+  {\Huge Specyfikacja wymagań} \\
+  \vspace{30pt}
+  
+  {\@author} \\
+  \vspace{10pt}
+  
+  {\@date}
+\end{center}
+
+\end{titlepage}
+\makeatother
+
+\tableofcontents
+\newpage
+
+\part{Specyfikacja wymagań}
+
+\section{Wymagania funkcjonalne}
+Wymagania funkcjonalne są opisane w postaci historyjek użytkownika ze
+scenariuszami testowymi w myśl metody BDD.  Priorytety historyjek
+zostały zdefiniowane w skali (Niski, Średni, Wysoki).
+
+\subsection{Perspektywa użytkownika}
+
+\subsubsection{Pobranie agregatu danych}
+Jako użytkownik chcę pobierać część wspólną linjek z podanych przez
+siebie plików przechowywanych w usłudze aby uzyskać dostęp do
+przetworzonej chronionej informacji.
+
+\textbf{Priorytet}: Wysoki
+
+Niech w usłudze będą przechowywane pliki o znanych użytkownikowi
+identyfikatorach.
+
+Kiedy użytkownik zażąda pobrania agregatu plików o wybranych
+identyfikatorach
+
+Wtedy usługa dostarcza na lokalną maszynę użytkownika plik składający
+się z części wspólnej linijek wybranych plików.
+
+
+\subsection{Perspektywa administratora}
+
+\subsubsection{Inicjalizacja danych w usłudze}
+Jako administrator chcę pobrać zasoby z zewnętrznego źródła do plików
+przechowywanych w usłudze aby umożliwić użytkownikom korzystanie z nich.
+
+\textbf{Priorytet}: Wysoki
+
+
+Niech pod pewnym adresem URL istnieje zasób dostępny przez HTTP lub
+HTTPs.
+
+Kiedy użytkownik wywoła z linii poleceń komendę klienta ,,\texttt{rsoctl
+fetch <url>}'',
+
+Wtedy klient zwraca identyfikator pliku, który użytkownik może użyć do
+pobrania pliku z usługi.
+
+\subsubsection{Dodanie węzła warstwy wewnętrznej}
+Jako administrator chcę dodać nowy węzeł magazynowy aby zwiększyć
+pojemność systemu.
+
+\textbf{Priorytet}: Niski
+
+Zakładając, że konfiguracja zawiera już jakąś listę węzłów warstwy
+wewnętrznej,
+
+Kiedy administrator doda do niej nową pozycję
+
+Wtedy usługa pozwala nowemu węzłowi na dołączenie do sieci, zachowując
+spójność przechowywanych danych.
+
+\subsubsection{Dodanie węzła warstwy zewnętrznej}
+Jako administrator chcę dodać nowy węzeł dostępowy aby zwiększyć przepustowość systemu.
+
+\textbf{Priorytet}: Niski
+
+Zakładając, że konfiguracja zawiera już jakąś listę węzłów warstwy zewnętrznej,
+
+Kiedy administrator doda do niej nową pozycję
+
+Wtedy nowy węzeł daje użytkownikom dostęp do usługi równoważny z dostępem przez pozostałe węzły.
+
+\subsubsection{Uruchomienie węzłów usługi}
+Jako administrator chcę dodać nowy węzeł dostępowy aby zwiększyć przepustowość systemu.
+
+\textbf{Priorytet}: Niski
+
+Zakładając, że konfiguracja zawiera już jakąś listę węzłów warstwy zewnętrznej,
+
+Kiedy administrator doda do niej nową pozycję
+
+Wtedy nowy węzeł daje użytkownikom dostęp do usługi równoważny z dostępem przez pozostałe węzły.
+
+\subsubsection{Zatrzymanie węzłów usługi}
+Jako administrator chcę móc zatrzymać usługę na wszystkich węzłach jedną komendą aby nie musieć zarządzać każdym węzła indywidualnie.
+
+\textbf{Priorytet}: Niski
+
+Zakładając, że usługa jest uruchomiona
+
+Oraz opisane w konfiguracji węzły są dostępne w sieci
+
+Kiedy administrator wywoła na węźle komendę ,,\texttt{rsoctl stop}''
+
+Wtedy usługa zostanie zatrzymana na wszystkich węzłach zdefiniowanych w konfiguracji
+
+\subsubsection{Sprawdzanie stanu węzłów usługi}
+Jako administrator chcę znać stan wszystkich węzłów usługi aby być w
+stanie rozpoznać problemy i wiedzieć, czy konieczne jest podjęcie
+działania w celu ich rozwiązania.
+
+\textbf{Priorytet}: Wysoki
+
+Zakładając, że usługa jest uruchomiona
+
+Oraz opisane w konfiguracji węzły są dostępne w sieci
+
+Kiedy administrator wywoła na węźle komendę ,,\texttt{rsoctl status}''
+
+Wtedy zostaną zebrane i wyświetlone informacje o stanie wszystkich
+węzłów usługi.
+
+\section{Awarie}
+W czasie działania usługi może wystąpić szereg awarii. Usługa powinna
+pozostać dostępna, tzn. kontynuować poprawne świadczenie funkcjonalności
+opisanych w poprzedniej sekcji w przypadku wystąpienia tych awarii oraz
+ich kombinacji. Odporność na awarie może być testowana przez
+wstrzykiwanie usterek w trakcie przebiegu podstawowych testów
+funkcjonalnych.
+
+Niech:
+
+\[ n = \mbox{liczba węzłów magazynowych} \]
+\[ i, j, k \leq \mbox{liczba replik podana w konfiguracji} - 1 < n \]
+
+\subsection{Awaria węzłów}
+Następuje nieplanowane wyłączenie $k$ z $n$ węzłów warstwy wewnętrznej.
+\subsection{Awaria połączeń pomiędzy warstwą zewnętrzną i wewnętrzną}
+Węzeł warstwy zewnętrznej nie może połączyć się lub traci nawiązane
+połączenie z $i$ kolejnymi węzłami warstwy wewnętrznej.
+\subsection{Awaria połączeń pomiędzy węzłami warstwy wewnętrznej}
+Węzeł warstwy wewnętrznej nie może połączyć się lub traci nawiązane
+połączenie z $j$ kolejnymi węzłami warstwy wewnętrznej.
+
+
+\section{Działania niepożądane}
+Wymagane jest, żeby usługa była niepodatna na następujące wektory ataku:
+
+\subsection{Włączenie nieuprawnionego węzła}
+Atakujący może próbować podstawić pod czasowo nieosiągalny (na przykład
+w wyniku celowego przerwania łączności lub utraty dostępności w wyniku
+ataku typu Denial of Service) węzeł własny, wrogi węzeł i w ten sposób
+uzyskać kontrolę nad systemem lub uzyskać dostęp do chronionej
+informacji. Nie rozważamy sytuacji, gdy administrator usługi
+współpracuje (świadomie i dobrowolnie bądź nie) z atakującym.
+
+\subsection{Dostęp przez nieautoryzowanego użytkownika}
+Atakujący może próbować uzyskać dostęp do którego nie ma uprawnień z
+poziomu zewnętrznego klienta. Może próbować to osiągnąć: polegając
+bezpośrednio na niezabezpieczonym API usługi; monitorując ruch pomiędzy
+uprawnionym użytkownikiem i usługą; uzyskując nieautoryzowany dostęp do
+maszyny uprawnionego użytkownika. Nie rozważamy sytuacji, gdy uprawniony
+użytkownik usługi współpracuje (świadomie i dobrowolnie bądź nie) z
+atakującym.
+
+
+
+\end{document}
