@@ -44,10 +44,12 @@
 
 \part{Specyfikacja wymagań}
 
+Priorytety wymagań zostały zdefiniowane w skali (Niski, Średni, Wysoki).
+Posłużą one do ustalenia kolejności implementacji zadań.
+
 \section{Wymagania funkcjonalne}
 Wymagania funkcjonalne są opisane w postaci historyjek użytkownika ze
-scenariuszami testowymi w myśl metody BDD.  Priorytety historyjek
-zostały zdefiniowane w skali (Niski, Średni, Wysoki).
+scenariuszami testowymi w myśl metody BDD.  
 
 \subsection{Perspektywa użytkownika}
 
@@ -166,12 +168,20 @@ Niech:
 
 \subsection{Awaria węzłów}
 Następuje nieplanowane wyłączenie $k$ z $n$ węzłów warstwy wewnętrznej.
+
+\textbf{Priorytet}: Średni
+
 \subsection{Awaria połączeń pomiędzy warstwą zewnętrzną i wewnętrzną}
 Węzeł warstwy zewnętrznej nie może połączyć się lub traci nawiązane
 połączenie z $i$ kolejnymi węzłami warstwy wewnętrznej.
+
+\textbf{Priorytet}: Średni
+
 \subsection{Awaria połączeń pomiędzy węzłami warstwy wewnętrznej}
 Węzeł warstwy wewnętrznej nie może połączyć się lub traci nawiązane
 połączenie z $j$ kolejnymi węzłami warstwy wewnętrznej.
+
+\textbf{Priorytet}: Średni
 
 
 \section{Działania niepożądane}
@@ -185,6 +195,8 @@ uzyskać kontrolę nad systemem lub uzyskać dostęp do chronionej
 informacji. Nie rozważamy sytuacji, gdy administrator usługi
 współpracuje (świadomie i dobrowolnie bądź nie) z atakującym.
 
+\textbf{Priorytet}: Średni
+
 \subsection{Dostęp przez nieautoryzowanego użytkownika}
 Atakujący może próbować uzyskać dostęp do którego nie ma uprawnień z
 poziomu zewnętrznego klienta. Może próbować to osiągnąć: polegając
@@ -193,6 +205,8 @@ uprawnionym użytkownikiem i usługą; uzyskując nieautoryzowany dostęp do
 maszyny uprawnionego użytkownika. Nie rozważamy sytuacji, gdy uprawniony
 użytkownik usługi współpracuje (świadomie i dobrowolnie bądź nie) z
 atakującym.
+
+\textbf{Priorytet}: Niski
 
 
 
