@@ -230,7 +230,7 @@ Są to dowolne wartości liczbowe.
 
 \subsection{Identyfikator węzła}
 To każdego węzła warstwy wewnętrznej przypisany jest numeryczny
-identyfikator w zakresie pomiędzy 1 a liczną węzłów.
+identyfikator w zakresie pomiędzy 1 a liczbą węzłów.
 
 \section{Kluczowe elementy infrastruktury}
 \subsection{Węzły warstwy wewnętrznej}
@@ -291,7 +291,7 @@ zewnętrzna - warsta wewnętrzna.
 
 \begin{lstlisting}
 Plik { idZasobu, zadanaLiczbaReplik }
-Wezel w warstwy wewnetrznej udostepnia
+Wezel warstwy wewnetrznej udostepnia
   listaPlikow(w) =
     lista plikow przechowywanych na wezle
   pobierzReplike(w, wZrodlowy, idZasobu) =
@@ -324,7 +324,7 @@ Należy zauważyć, że przy równoczesnym działaniu wielu kontrolerów
 replikacji może dojść do migotania replik w sytuacji, gdzie jeden z nich
 ,,widzi'' pewną replikę, tj. ma sprawne połączenie do węzła ją
 przechowującego i zlecał usunięcie nadmiarowych replik, a inny nie.
-Aby uniknąć tego zjawiska implementacja operacja \texttt{usunReplike}
+Aby uniknąć tego zjawiska implementacja operacji \texttt{usunReplike}
 powinna czekać z faktycznym usunięciem przez okres znacząco dłuższy
 od okresu badania żywotności i odwoływać je gdyby pojawiło się ponowne
 żadanie pobrania repliki.
