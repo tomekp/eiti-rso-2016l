@@ -189,6 +189,7 @@ połączenie z $j$ kolejnymi węzłami warstwy wewnętrznej.
 
 
 \section{Działania niepożądane}
+\label{attackVectors}
 Wymagane jest, żeby usługa była niepodatna na następujące wektory ataku:
 
 \subsection{Włączenie nieuprawnionego węzła}
@@ -246,9 +247,6 @@ na węzłach tej warstwy udostępnia następujące API:
   \item Usuń replikę
   \item Lista plików składowanych na węźle
 \end{itemize}
-
-\subsubsection{Obsługa żądania pobrania pliku}
-Aplikacja rozpoczyna asnychroniczne pobieranie wskazanych danych.
 
 \subsection{Węzły warstwy zewnętrznej}
 Warstwa zewnętrzna odpowiada za:
@@ -330,5 +328,20 @@ Aby uniknąć tego zjawiska implementacja operacja \texttt{usunReplike}
 powinna czekać z faktycznym usunięciem przez okres znacząco dłuższy
 od okresu badania żywotności i odwoływać je gdyby pojawiło się ponowne
 żadanie pobrania repliki.
+
+
+\section{Sieć}
+Komunikacja pomiędzy węzłami oraz węzłami i klientami odbywać się będzie
+za pomocą protokołu HTTPS.  Adresy poszczególnych węzłów warstwy
+będą zapisane w pliku konfiguracyjnym usługi.  Jeśli będzie to
+konieczne, możliwe będzie też rozszerzenie funkcjonalności o dynamiczne
+wykrywanie węzłów.
+
+Wszystkie połączenia pomiędzy węzłami oraz węzłami i klientami będą
+nawiązywane bezpieczenie z pośrednictwem protokołu TLS.  W celu
+realizacji wymagań opisanych w sekcji \ref{attackVectors} obie strony
+połączenia będą uwierzytelniane z użyciem kluczy kryptografii
+asymetrycznej z użyciem metod wbudowanych w protokół.  Klucze publiczne
+węzłów i użytkowników zostaną zapisane w konfiguracji usługi.
 
 \end{document}
