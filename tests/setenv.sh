@@ -1,0 +1,1 @@
+export RSO_URL="http://localhost:8080/";
