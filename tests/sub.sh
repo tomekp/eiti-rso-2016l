@@ -1,5 +1,6 @@
 #!/bin/bash
 source setenv.sh
+#skrypt pomocniczy do uruchomienie w tle przez skrypt główny
 
 givenId=$1;
 

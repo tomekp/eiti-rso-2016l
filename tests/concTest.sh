@@ -1,6 +1,6 @@
 #!/bin/bash
 source setenv.sh
-# scenariusz: 5 równoległych requestów po plik (inny), dla uproszczenia jeden, sprawdzenie czy każdy otrzymał to czego żądał
+# scenariusz: 10równoległych requestów po plik (inny), dla uproszczenia jeden (ewentualnie do rozważenia kilka), sprawdzenie czy każdy otrzymał to czego żądał
 
 
 #prepare
@@ -26,7 +26,7 @@ done
 #download from subprocesses
 for generatedId in ${idsToGenerate[@]}
 do
-	./sub.sh $generatedId;
+	./sub.sh $generatedId &;
 done
 
 wait
