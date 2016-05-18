@@ -19,7 +19,7 @@ printf "\n ";
 #generate files
 for generatedId in ${idsToGenerate[@]}
 do
-	cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 550000000 | head -n 1 >> temp_file_$generatedId;
+	head -c550000K /dev/urandom  >> temp_file_$generatedId;
 	# cat -F .... # upload generated file
 done
 
