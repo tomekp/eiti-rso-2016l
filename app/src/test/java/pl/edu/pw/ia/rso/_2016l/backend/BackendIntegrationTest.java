@@ -55,7 +55,7 @@ public class BackendIntegrationTest {
                 .put(Entity.entity("{\"urlToDownload\": \"" + urlToDownload + "\"}", MediaType.APPLICATION_JSON_TYPE));
 
         Assert.assertEquals(HttpStatus.ACCEPTED.value(), orderDownloadResponse.getStatus());
-        //FIXME Assert.assertEquals(UriBuilder.fromUri(target.getUri()).path("/files/1").build(), orderDownloadResponse.getLocation());
+        Assert.assertEquals(UriBuilder.fromUri(target.getUri()).path("/files/1").build(), orderDownloadResponse.getLocation());
 
 
         Response fileContentResponse = Awaitility.await()
@@ -74,7 +74,6 @@ public class BackendIntegrationTest {
     }
 
     @Test(timeout = 10000L)
-
     public void shouldDownloadFilesAsynchronouslyAndMarkAsFailed() throws Exception {
         String urlToDownload = "http://1.1.1.1/randomFile";
         Response orderDownloadResponse = target.path("files/2")

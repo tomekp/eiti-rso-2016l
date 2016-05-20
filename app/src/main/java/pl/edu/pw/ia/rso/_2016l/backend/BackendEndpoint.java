@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import pl.edu.pw.ia.rso._2016l.common.FileId;
+import pl.edu.pw.ia.rso._2016l.common.HttpStatusCodeAdapter;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -34,7 +35,7 @@ public class BackendEndpoint {
         log.info("Downloading of file {} from {} scheduled.", fileId, urlToDownload);
         return Response
                 .accepted()
-                .location(URI.create("http://example.com/files/" + id))
+                .location(URI.create("/api/files/" + id))
                 .entity(MessageFormat.format("Downloading \"{0}\" as \"{1}\"", urlToDownload, id))
                 .build();
     }
@@ -67,43 +68,8 @@ public class BackendEndpoint {
 
         return Response
                 .status(status)
-                .entity("...")
                 .build();
     }
 
 }
 
-class HttpStatusCodeAdapter implements Response.StatusType {
-    private final HttpStatus httpStatus;
-
-    HttpStatusCodeAdapter(HttpStatus httpStatus) {
-        this.httpStatus = httpStatus;
-    }
-
-    @Override
-    public int getStatusCode() {
-        return httpStatus.value();
-    }
-
-    @Override
-    public Response.Status.Family getFamily() {
-        switch (httpStatus.series()) {
-            case INFORMATIONAL:
-                return Response.Status.Family.INFORMATIONAL;
-            case SUCCESSFUL:
-                return Response.Status.Family.SUCCESSFUL;
-            case REDIRECTION:
-                return Response.Status.Family.REDIRECTION;
-            case CLIENT_ERROR:
-                return Response.Status.Family.CLIENT_ERROR;
-            case SERVER_ERROR:
-                return Response.Status.Family.SERVER_ERROR;
-        }
-        return Response.Status.Family.OTHER;
-    }
-
-    @Override
-    public String getReasonPhrase() {
-        return httpStatus.getReasonPhrase();
-    }
-}
