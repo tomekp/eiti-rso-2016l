@@ -29,6 +29,7 @@ public class FileDataStorage implements DataStorage {
     @Autowired
     public FileDataStorage(@Value("${backend.storageDirectory}") String storageDirectory) {
         this.storageDirectory = StringUtils.isEmpty(storageDirectory) ? tempDirectory() : storageDirectory;
+        new File(this.storageDirectory).mkdirs();
         log.info("Using {} as storage.", this.storageDirectory);
     }
 

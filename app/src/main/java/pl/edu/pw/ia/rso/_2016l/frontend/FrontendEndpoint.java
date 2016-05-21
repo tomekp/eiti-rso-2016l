@@ -7,11 +7,10 @@ import org.springframework.stereotype.Component;
 import pl.edu.pw.ia.rso._2016l.common.FileId;
 
 import javax.ws.rs.*;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.StreamingOutput;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -42,12 +41,12 @@ public class FrontendEndpoint {
         return Response
                 .accepted()
                 .location(URI.create("/api/files/" + fileId.getId()))
-                .entity(proxyingResults)
+                .entity(new GenericEntity<List<ProxyingResult>>(proxyingResults) {})
                 .build();
     }
 
     @GET
-    @Path("{fileId}")
+    @Path("/{fileId}")
     public Response getFile(@PathParam("fileId") Long id) {
         FileId fileId = new FileId(id);
         InputStream file = backendGatewayFactory.forFile(fileId).getFile();

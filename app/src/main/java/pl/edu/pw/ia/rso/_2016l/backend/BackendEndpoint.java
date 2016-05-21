@@ -41,7 +41,7 @@ public class BackendEndpoint {
     }
 
     @GET
-    @Path("{fileId}")
+    @Path("/{fileId}")
     public Response getFile(@PathParam("fileId") Long id) {
         FileId fileId = new FileId(id);
         FileQueryResult queryResult = dataManager.queryFile(fileId);

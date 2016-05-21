@@ -141,7 +141,25 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.4.9</version>
+                <configuration>
+                    <imageName>${project.artifactId}</imageName>
+                    <dockerDirectory>src/main/docker</dockerDirectory>
+                    <resources>
+                        <resource>
+                            <targetPath>/</targetPath>
+                            <directory>${project.build.directory}</directory>
+                            <include>${project.build.finalName}-frontend.jar</include>
+                            <include>${project.build.finalName}-backend.jar</include>
+                        </resource>
+                    </resources>
+                </configuration>
+            </plugin>
         </plugins>
+        <defaultGoal>clean package docker:build</defaultGoal>
     </build>
 
 </project>

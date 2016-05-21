@@ -1,6 +1,7 @@
 package pl.edu.pw.ia.rso._2016l.frontend;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,6 +16,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
@@ -33,9 +36,18 @@ public class BackendGatewayFactory {
     private final long backendTimeoutSeconds;
 
     @Autowired
-    public BackendGatewayFactory(@Value("#{'${backendEndpoints}'.split(';')}") List<String> backendEndpoints, @Value("${backendTimeoutSeconds:5}") long backendTimeoutSeconds) {
-        this.backendEndpoints = backendEndpoints;
+    public BackendGatewayFactory(@Value("${backendEndpoints}") String backendEndpoints, @Value("${backendTimeoutSeconds:5}") long backendTimeoutSeconds) {
+        this.backendEndpoints = parseBackendAddressesConfig(backendEndpoints);
         this.backendTimeoutSeconds = backendTimeoutSeconds;
+    }
+
+    private List<String> parseBackendAddressesConfig(String addresses) {
+        return Collections.unmodifiableList(
+                Arrays.asList(addresses.split(";"))
+                        .stream()
+                        .filter(StringUtils::isNotBlank)
+                        .collect(Collectors.toList())
+        );
     }
 
     public BackendGateway forFile(FileId fileId) {
