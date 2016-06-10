@@ -3,6 +3,8 @@ package pl.edu.pw.ia.rso._2016l.frontend;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.ClientProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -30,7 +32,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class BackendGatewayFactory {
 
-    private final Client client = ClientBuilder.newClient();
+    private final Client client;
     private final Random random = new Random();
     private final List<String> backendEndpoints;
     private final long backendTimeoutSeconds;
@@ -39,6 +41,10 @@ public class BackendGatewayFactory {
     public BackendGatewayFactory(@Value("${backendEndpoints}") String backendEndpoints, @Value("${backendTimeoutSeconds:5}") long backendTimeoutSeconds) {
         this.backendEndpoints = parseBackendAddressesConfig(backendEndpoints);
         this.backendTimeoutSeconds = backendTimeoutSeconds;
+        ClientConfig configuration = new ClientConfig();
+        configuration.property(ClientProperties.CONNECT_TIMEOUT, 1000);
+        configuration.property(ClientProperties.READ_TIMEOUT, 1000);
+        this.client = ClientBuilder.newClient(configuration);
     }
 
     private List<String> parseBackendAddressesConfig(String addresses) {
@@ -105,6 +111,7 @@ public class BackendGatewayFactory {
         public InputStream getFile() {
             String backendUrl = backendUrls.get(random.nextInt(backendUrls.size()));
             WebTarget target = prepareWebTarget(backendUrl);
+            log.info("Using {} for {}", target.getUri(), fileId);
             Response response = target.request().get();
             return response.readEntity(InputStream.class);
         }

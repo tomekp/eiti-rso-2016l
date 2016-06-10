@@ -45,7 +45,7 @@ public class BackendEndpoint {
     public Response getFile(@PathParam("fileId") Long id) {
         FileId fileId = new FileId(id);
         FileQueryResult queryResult = dataManager.queryFile(fileId);
-        log.debug("Result of query for {} is: {}", fileId, queryResult);
+        log.info("Result of query for {} is: {}", fileId, queryResult);
 
         Response.StatusType status = Response.Status.INTERNAL_SERVER_ERROR;
 
